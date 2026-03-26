@@ -24,8 +24,8 @@ flowchart LR
     normalize --> chunk[ChunkPipeline]
     chunk --> index[TFIDFIndex]
 
-    userQuery[UserQuery] --> graph[LangGraph]
-    graph --> retrieve[RetrieveNode]
+    userQuery[UserQuery] --> ragGraph[LangGraph]
+    ragGraph --> retrieve[RetrieveNode]
     retrieve --> assemble[ContextNode]
     assemble --> generate[AnswerNode]
     generate --> score[MetricsNode]
