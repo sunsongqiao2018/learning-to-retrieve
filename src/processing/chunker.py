@@ -1,10 +1,10 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from src.datasets.schema import DocumentChunk, NormalizedQARecord
+from src.datasets.schema import DocumentChunk, NornalizedContextSentence
 
 
-def chunk_records(
-    records: list[NormalizedQARecord], chunk_size: int = 800, chunk_overlap: int = 100
+def chunk_contexts(
+    contexts: list[NornalizedContextSentence], chunk_size: int = 300, chunk_overlap: int = 80
 ) -> list[DocumentChunk]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
@@ -12,18 +12,17 @@ def chunk_records(
         separators=["\n\n", "\n", ". ", " ", ""],
     )
     chunks: list[DocumentChunk] = []
-    for record in records:
-        parts = splitter.split_text(record.document)
+    for context in contexts:
+        parts = splitter.split_text(context.text)
         for idx, text in enumerate(parts):
             chunks.append(
                 DocumentChunk(
-                    chunk_id=f"{record.example_id}_chunk_{idx}",
+                    chunk_id=f"{context.example_id}_title_{context.title}_sent_{context.sent_id}_chunk_{idx}",
                     text=text,
                     metadata={
-                        "dataset": record.dataset,
-                        "split": record.split,
-                        "example_id": record.example_id,
-                        **record.metadata,
+                        "dataset": context.dataset,
+                        "split": context.split,
+                        "example_id": context.example_id,
                     },
                 )
             )
