@@ -2,15 +2,13 @@ import argparse
 from pathlib import Path
 
 from src.config import load_settings
-from src.datasets.hotpot_hf_loader import load_hotpot_hf
-from src.datasets.hotpot_loader import load_hotpot
+from src.datasets.hotpot_hf_loader import load_hotpot_contexts_hf, load_hotpot_qa_records_hf
 from src.processing.chunker import chunk_records
 from src.retrieval.retriever import Retriever, available_retrievers
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build a local RAG index with a pluggable retriever.")
-    parser.add_argument("--hotpot", type=Path, help="Path to HotpotQA JSON file.")
     parser.add_argument(
         "--hotpot-hf-config",
         type=str,
@@ -35,8 +33,7 @@ def main() -> None:
     index_path = args.index_path or settings.index_path
 
     records = []
-    if args.hotpot:
-        records.extend(load_hotpot(args.hotpot, split=args.split))
+
     if args.hotpot_hf_config:
         records.extend(load_hotpot_hf(config=args.hotpot_hf_config, split=args.split))
 

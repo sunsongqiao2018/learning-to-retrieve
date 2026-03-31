@@ -15,6 +15,15 @@ class NormalizedQARecord:
 
 
 @dataclass(slots=True)
+class NornalizedContextSentence:
+    dataset: str
+    split: str
+    sent_id: str
+    title: str
+    text: str
+
+
+@dataclass(slots=True)
 class DocumentChunk:
     chunk_id: str
     text: str
